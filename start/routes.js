@@ -5,6 +5,5 @@ Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
 
-require('./routes/dishRoutes')
 require('./routes/userRoutes')
 require('./routes/sessionsRoutes')
