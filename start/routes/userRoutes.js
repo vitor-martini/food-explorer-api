@@ -4,4 +4,4 @@ const Route = use('Route')
 
 Route.get('users', 'UserController.index').middleware(['authViaCookie'])
 Route.post('users', 'UserController.store')
-Route.delete('users/:id', 'UserController.destroy')
+Route.delete('users/:id', 'UserController.destroy').middleware(['authViaCookie', 'adminAuth'])
