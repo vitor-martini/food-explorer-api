@@ -9,37 +9,37 @@ class UserSeeder {
       {
         name: 'Alice Johnson',
         email: 'alice.johnson@example.com',
-        password: await Hash.make('123'),
+        password: '123',
         is_admin: false
       },
       {
         name: 'Bob Smith',
         email: 'bob.smith@example.com',
-        password: await Hash.make('123'),
+        password: '123',
         is_admin: false
       },
       {
         name: 'Carol Williams',
         email: 'carol.williams@example.com',
-        password: await Hash.make('123'),
+        password: '123',
         is_admin: false
       },
       {
         name: 'David Brown',
         email: 'david.brown@example.com',
-        password: await Hash.make('123'),
+        password: '123',
         is_admin: false
       },
       {
         name: 'Eve Davis',
         email: 'eve.davis@example.com',
-        password: await Hash.make('123'),
+        password: '123',
         is_admin: false
       },
       {
         name: 'John Doe',
         email: 'john.doe@example.com',
-        password: await Hash.make('123'),
+        password: '123',
         is_admin: true
       }
     ])
