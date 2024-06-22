@@ -7,8 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "adonis serve --dev",
-    "reset": "adonis migration:reset && adonis migration:run && adonis seed --files=index.js",
-    "test": "node ace test"
+    "reset": "adonis migration:reset && adonis migration:run && adonis seed --files=index.js"
   },
   "author": "",
   "license": "UNLICENSED",
