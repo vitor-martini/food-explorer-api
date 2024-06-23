@@ -5,8 +5,8 @@ const AppService = use("App/Services/AppService")
 const AppException = use('App/Exceptions/AppException')
 
 class UserService extends AppService {
-  constructor(userRepository) {
-    super(userRepository)
+  constructor(repository) {
+    super(repository)
   }
 
   async create(data) {

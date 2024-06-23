@@ -1,8 +1,8 @@
 'use strict'
 
-const UserRepository = use('App/Repositories/UserRepository')
+const userRepository = use('App/Repositories/UserRepository')
 const UserService = use('App/Services/UserService')
-const userService = new UserService(UserRepository)
+const userService = new UserService(userRepository)
 
 class UserController {
   async destroy({ params, response }) {

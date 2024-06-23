@@ -1,9 +1,4 @@
 'use strict'
-const Route = use('Route')
-
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
-
-require('./routes/userRoutes')
+require('./routes/usersRoutes')
 require('./routes/sessionsRoutes')
+require('./routes/dishesRoutes')

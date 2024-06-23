@@ -1,9 +1,9 @@
 'use strict'
 
 const Env = use('Env')
-const UserRepository = use('App/Repositories/UserRepository')
+const userRepository = use('App/Repositories/UserRepository')
 const SessionService = use('App/Services/SessionService')
-const sessionService = new SessionService(UserRepository)
+const sessionService = new SessionService(userRepository)
 
 class SessionController {
   async login({ request, auth, response }) {
