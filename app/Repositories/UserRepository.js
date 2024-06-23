@@ -5,7 +5,9 @@ const User = use('App/Models/User')
 
 class UserRepository extends PgRepository {
   async findByEmail(email) {
-    return await this.model.findBy('email', email)
+    return this.model.query()
+      .whereRaw('LOWER(email) = ?', email.toLowerCase())
+      .first()
   }
 
   async getAll() {

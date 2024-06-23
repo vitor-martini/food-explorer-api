@@ -4,7 +4,9 @@ const Dish = use('App/Models/Dish')
 
 class DishRepository extends PgRepository{
   async findByName(name) {
-    return await this.model.findBy('name', name)
+    return this.model.query()
+      .whereRaw('LOWER(name) = ?', name.toLowerCase())
+      .first()
   }
 }
 
