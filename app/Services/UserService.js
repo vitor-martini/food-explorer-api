@@ -35,18 +35,6 @@ class UserService extends AppService {
     user.active = false 
     return await this.repository.delete(user)
   }
-  
-  async getAll() {
-    return await this.repository.getAll()
-  }
-
-  async getById(id) {
-    const user = await this.repository.findById(id)
-    if(!user) {
-      throw new AppException('Not found', 404)
-    }
-    return user
-  }
 
   validateAuthorization(requestUser, id) {
     if(!requestUser.is_admin && Number(requestUser.id) !== Number(id)) {

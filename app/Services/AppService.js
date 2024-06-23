@@ -12,7 +12,11 @@ class AppService {
   }
 
   async getById(id) {
-    return await this.repository.findById(id)
+    const obj = await this.repository.findById(id)
+    if(!obj) {
+      throw new AppException('Not found', 404)
+    }
+    return obj
   }
 
   async create(data) {
