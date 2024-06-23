@@ -51,10 +51,10 @@ class DishIngredientSeeder {
       { dish_id: 15, ingredient_id: 40 }, 
       { dish_id: 15, ingredient_id: 45 }, 
       { dish_id: 16, ingredient_id: 49 }, 
-      { dish_id: 17, ingredient_id: 50 }, 
-      { dish_id: 18, ingredient_id: 51 }, 
+      { dish_id: 17, ingredient_id: 48 }, 
+      { dish_id: 18, ingredient_id: 48 }, 
       { dish_id: 19, ingredient_id: 48 },
-      { dish_id: 19, ingredient_id: 52 }, 
+      { dish_id: 19, ingredient_id: 48 }, 
       { dish_id: 20, ingredient_id: 46 } 
     ])
   }
