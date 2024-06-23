@@ -1,8 +1,16 @@
 'use strict'
 
+const { capitalizeFirstLetter } = require("../Utils/stringUtils")
 const Model = use('Model')
 
 class Dish extends Model {
+  static boot() {
+    super.boot()
+    this.addHook('beforeSave', async (dishInstance) => {
+      dishInstance.name = capitalizeFirstLetter(dishInstance.name)
+    })
+  }
+
   category() {
     return this.belongsTo('App/Models/Category')
   }
