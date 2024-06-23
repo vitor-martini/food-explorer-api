@@ -5,13 +5,13 @@ const { ServiceProvider } = require('@adonisjs/fold')
 class DishServiceProvider extends ServiceProvider {
   register() {
     this.app.singleton('App/Services/DishService', (app) => {
-      const DishRepository = app.use('App/Repositories/DishRepository')
-      const CategoryRepository = app.use('App/Repositories/CategoryRepository')
-      const IngredientRepository = app.use('App/Repositories/IngredientRepository')
-      const DishIngredientRepository = app.use('App/Repositories/DishIngredientRepository')
+      const dishRepository = app.use('App/Repositories/DishRepository')
+      const categoryRepository = app.use('App/Repositories/CategoryRepository')
+      const ingredientRepository = app.use('App/Repositories/IngredientRepository')
+      const dishIngredientRepository = app.use('App/Repositories/DishIngredientRepository')
       const DishService = require('../Services/DishService') 
 
-      return new DishService(DishRepository, CategoryRepository, IngredientRepository, DishIngredientRepository)
+      return new DishService(dishRepository, categoryRepository, ingredientRepository, dishIngredientRepository)
     })
   }
 }
