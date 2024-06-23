@@ -1,28 +1,31 @@
 'use strict'
 
-const userRepository = use('App/Repositories/UserRepository')
 const UserService = use('App/Services/UserService')
-const userService = new UserService(userRepository)
 
 class UserController {
+  constructor() {
+    this.userService = UserService
+  }
+
   async destroy({ params, response }) {
-    await userService.delete(params.id)
+    await this.userService.delete(params.id)
     return response.status(204).json(null)
   }
 
   async index({ response }) {
-    const users = await userService.getAll()
+    const users = await this.userService.getAll()
     return response.json(users)
   }
 
   async store({ request, response }) {
     const userData = request.only(['name', 'email', 'password']) 
-    const user = await userService.create(userData)
+    const user = await this.userService.create(userData)
+
     return response.status(201).json(user)
   }
   
   async show({ params }) {
-    return userService.getById(params.id)
+    return this.userService.getById(params.id)
   }
 
   async update({ auth, params, request, response }) {
@@ -34,7 +37,7 @@ class UserController {
       userData = request.only(['name', 'email', 'password', 'old_password'])
     }
 
-    await userService.update(requestUser, params.id, userData)
+    await this.userService.update(requestUser, params.id, userData)
     return response.status(200).json(null)
   }
 }

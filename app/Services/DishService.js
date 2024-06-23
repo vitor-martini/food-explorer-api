@@ -1,3 +1,5 @@
+'use strict'
+
 const AppService = use('App/Services/AppService')
 const AppException = use('App/Exceptions/AppException')
 
