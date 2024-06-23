@@ -17,6 +17,10 @@ class SessionService {
       throw new AppException("Invalid email or password")
     }
 
+    if(!user.active) {
+      throw new AppException("User inactive")
+    }
+
     const passwordIsValid = await Hash.verify(password, user.password)
     if(!passwordIsValid) {
       throw new AppException("Invalid email or password")
