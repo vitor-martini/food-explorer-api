@@ -11,23 +11,8 @@ class DishService extends AppService {
     this.dishIngredientRepository = dishIngredientRepository 
   }
 
-  async create({name, category_id, price, description, ingredients}) {
-    if(!name || !category_id || !price || !description || !ingredients || ingredients.length === 0) {
-      throw new AppException('Required fields not informed', 400)
-    }
-
-    const isNameAlreadyInUse = await this.repository.findByName(name)
-    if(isNameAlreadyInUse) {
-      throw new AppException('Dish already registered', 400)
-    }
-
-    const isValidCategory = await this.categoryRepository.findById(category_id)
-    if(!isValidCategory) {
-      throw new AppException('Invalid category', 400)
-    }
-    
-    const dish = await this.repository.create({name, category_id, price, description})
-
+  async handleIngredients(ingredients, dish) {
+    await this.dishIngredientRepository.deleteByDish(dish.id)
     ingredients = [...new Set(ingredients.map(ingredient =>  ingredient = ingredient.toLowerCase()))]
     const checkIngredientsPromises = ingredients.map(async (ingredient) => {
       const find = await this.ingredientRepository.findByName(ingredient)
@@ -38,13 +23,49 @@ class DishService extends AppService {
         const newIngredient = await this.ingredientRepository.create({ name: ingredient })
         ingredient_id = newIngredient.id
       }
-
+      
       await this.dishIngredientRepository.create({ dish_id: dish.id, ingredient_id })
     })
 
     await Promise.all(checkIngredientsPromises)
-    dish.ingredients = ingredients
+    return ingredients
+  }
 
+  async validateFields({name, category_id, price, description, ingredients}, dishId = null) {
+    if(!name || !category_id || !price || !description || !ingredients || ingredients.length === 0) {
+      throw new AppException('Required fields not informed', 400)
+    }
+
+    const dishByName = await this.repository.findByName(name)
+    if(dishByName && Number(dishByName.id) !== Number(dishId)) {
+      throw new AppException('Dish already registered', 400)
+    }
+
+    const isValidCategory = await this.categoryRepository.findById(category_id)
+    if(!isValidCategory) {
+      throw new AppException('Invalid category', 400)
+    }
+  }
+
+  async create({name, category_id, price, description, ingredients}) {
+    await this.validateFields({name, category_id, price, description, ingredients})
+    const dish = await this.repository.create({name, category_id, price, description})
+    ingredients = await this.handleIngredients(ingredients, dish)
+    dish.ingredients = ingredients
+    return dish
+  }
+
+  async update(dishId, {name, category_id, price, description, ingredients}) {
+    const dish = await this.repository.findById(dishId)
+    if(!dish) {
+      throw new AppException('Not found', 404)
+    }
+    await this.validateFields({name, category_id, price, description, ingredients}, dishId)
+
+    dish.merge({name, category_id, price, description})
+    await this.repository.update(dish)
+    ingredients = await this.handleIngredients(ingredients, dish)
+    dish.ingredients = ingredients
     return dish
   }
 }
