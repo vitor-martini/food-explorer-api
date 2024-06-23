@@ -10,6 +10,7 @@ class UserSchema extends Schema {
       table.string('email', 200).notNullable().unique()
       table.string('password').notNullable()
       table.boolean('is_admin').notNullable().defaultTo(false)
+      table.boolean('active').notNullable().defaultTo(true)
       table.timestamps()
     })
   }
