@@ -1,5 +1,6 @@
 'use strict'
 
+const Hash = use('Hash')
 const AppService = use("App/Services/AppService")
 const AppException = use('App/Exceptions/AppException')
 
@@ -23,6 +24,80 @@ class UserService extends AppService {
     }
 
     return await this.repository.create(data)
+  }
+
+  async delete(id) {
+    const user = await this.repository.findById(id)
+    if(!user) {
+      throw new AppException('Not found', 404)
+    }
+
+    user.active = false 
+    return await this.repository.delete(user)
+  }
+  
+  async getAll() {
+    return await this.repository.getAll()
+  }
+
+  async getById(id) {
+    const user = await this.repository.findById(id)
+    if(!user) {
+      throw new AppException('Not found', 404)
+    }
+    return user
+  }
+
+  validateAuthorization(requestUser, id) {
+    if(!requestUser.is_admin && Number(requestUser.id) !== Number(id)) {
+      throw new AppException('Unauthorized', 401)
+    }
+  }
+
+  async validatePassword(requestUser, data, user) {
+    if(!requestUser.is_admin && 
+      ((data.password && !data.old_password) || 
+      (!data.password && data.old_password))){
+        throw new AppException('In order to update the password you must inform the old and new one', 400)
+      } 
+    
+    if(!requestUser.is_admin && 
+        data.password && data.old_password){
+        const passwordIsValid = await Hash.verify(data.old_password, user.password)
+        if(!passwordIsValid) {
+          throw new AppException("Invalid password")
+        }
+    }
+  }
+
+  async validateEmail(data, id) {
+    if(data.email) {
+      const emailUser = await this.repository.findByEmail(data.email)
+      if(emailUser && Number(emailUser.id) !== Number(id)) {
+        throw new AppException('Email already in use', 400)
+      }
+    }
+  }
+
+  validateParams(data) {
+    if(Object.keys(data).length === 0) {
+      throw new AppException('No valid params', 400)
+    }
+  }
+
+  async update(requestUser, id, data) {
+    this.validateParams(data)
+    this.validateAuthorization(requestUser, id)
+    const user = await this.repository.findById(id)
+    if(!user) {
+      throw new AppException('Not found', 404)
+    }
+    await this.validatePassword(requestUser, data, user)
+    await this.validateEmail(data, id)
+
+    delete data.old_password
+    user.merge(data)
+    return await this.repository.update(user)
   }
 }
 

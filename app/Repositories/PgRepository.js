@@ -20,8 +20,7 @@ class PgRepository {
     return await this.model.create(data)
   }
 
-  async update(obj, data) {
-    obj.merge(data)
+  async update(obj) {
     await obj.save()
     return obj
   }
