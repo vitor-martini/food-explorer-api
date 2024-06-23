@@ -1,5 +1,6 @@
 'use strict'
-
+const fs = use('fs')
+const Helpers = use('Helpers');
 const AppService = use('App/Services/AppService')
 const AppException = use('App/Exceptions/AppException')
 
@@ -67,6 +68,37 @@ class DishService extends AppService {
     ingredients = await this.handleIngredients(ingredients, dish)
     dish.ingredients = ingredients
     return dish
+  }
+
+  async updatePhoto(dishId, photo) {
+    const dish = await this.repository.findById(dishId)
+    if(!dish) {
+      throw new AppException('Not found', 404)
+    }
+
+    if(!photo) {
+      throw new AppException('Invalid photo', 400)
+    }
+
+    if(dish.photo) {
+      const photoPath = Helpers.publicPath(`uploads/${dish.photo}`)
+      if(fs.existsSync(photoPath)) {
+        fs.unlinkSync(photoPath)
+      }
+    }
+
+    const fileName = `${new Date().getTime()}.${photo.subtype}`
+    await photo.move(Helpers.publicPath('uploads'), {
+      name: fileName,
+      overwrite: true
+    })
+
+    if(!photo.moved()) {
+      throw AppException(photo.error(), 400)
+    }
+
+    dish.photo = `${fileName}`
+    await this.repository.update(dish)
   }
 }
 

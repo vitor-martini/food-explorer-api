@@ -19,6 +19,17 @@ class DishController {
     const dish = await this.dishService.update(dishId, dishData)
     return response.status(200).json(dish)
   }
+
+  async updatePhoto({ params, request, response }) {
+    const dishId = params.id
+    const photo = request.file('photo', {
+      types: ['image'],
+      size: '2mb'
+    })
+
+    await this.dishService.updatePhoto(dishId, photo)
+    return response.status(200).json()
+  }
 }
 
 module.exports = DishController

@@ -4,3 +4,4 @@ tmp
 public/**
 !public/**/
 !public/**/.gitkeep
+/img
