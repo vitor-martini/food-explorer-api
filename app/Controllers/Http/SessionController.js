@@ -1,14 +1,16 @@
 'use strict'
 
 const Env = use('Env')
-const userRepository = use('App/Repositories/UserRepository')
 const SessionService = use('App/Services/SessionService')
-const sessionService = new SessionService(userRepository)
 
 class SessionController {
+  constructor() {
+    this.sessionService = SessionService
+  }
+
   async login({ request, auth, response }) {
     const { email, password } = request.all()
-    const user = await sessionService.login({ email, password })
+    const user = await this.sessionService.login({ email, password })
     const token = await auth.generate(user)
     const cookieMaxAge = Env.get('COOKIE_MAX_AGE', 7200) 
     response.cookie('token', token.token, {
