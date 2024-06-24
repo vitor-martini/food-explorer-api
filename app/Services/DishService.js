@@ -13,40 +13,6 @@ class DishService extends AppService {
     this.dishIngredientRepository = dishIngredientRepository 
   }
 
-  async handleIngredients(ingredients, dish, trx) {
-    await this.dishIngredientRepository.deleteByDish(dish.id)
-    ingredients = [...new Set(ingredients.map(ingredient =>  ingredient = ingredient.toLowerCase()))]
-
-    const ingredientIds = await Promise.all(ingredients.map(async (ingredient) => {
-      const existingIngredient = await this.ingredientRepository.findByName(ingredient)
-      if (existingIngredient) {
-        return existingIngredient.id
-      } 
-      
-      const newIngredient = await this.ingredientRepository.create({ name: ingredient }, trx)
-      return newIngredient.id
-    }))
-
-    await dish.ingredients().attach(ingredientIds, null, trx)
-    return ingredients
-  }
-
-  async validateFields({name, category_id, price, description, ingredients}, dishId = null) {
-    if(!name || !category_id || !price || !description || !ingredients || ingredients.length === 0) {
-      throw new AppException('Required fields not informed', 400)
-    }
-
-    const dishByName = await this.repository.findByName(name)
-    if(dishByName && Number(dishByName.id) !== Number(dishId)) {
-      throw new AppException('Dish already registered', 400)
-    }
-
-    const isValidCategory = await this.categoryRepository.findById(category_id)
-    if(!isValidCategory) {
-      throw new AppException('Invalid category', 400)
-    }
-  }
-
   async create({name, category_id, price, description, ingredients}) {
     await this.validateFields({name, category_id, price, description, ingredients})
 
@@ -65,6 +31,42 @@ class DishService extends AppService {
     }
   }
 
+  async delete(dishId) {
+    const dish = await this.repository.findById(dishId)
+    if(!dish) {
+      throw new AppException('Not found', 404)
+    }
+
+    dish.active = false 
+    this.repository.delete(dish)
+  }
+
+  async fetch(filters) {
+    return await this.repository.fetch(filters)
+  }
+
+  async getById(id) {
+    return this.repository.getById(id)
+  }
+
+  async handleIngredients(ingredients, dish, trx) {
+    await this.dishIngredientRepository.deleteByDish(dish.id)
+    ingredients = [...new Set(ingredients.map(ingredient =>  ingredient = ingredient.toLowerCase()))]
+
+    const ingredientIds = await Promise.all(ingredients.map(async (ingredient) => {
+      const existingIngredient = await this.ingredientRepository.getByName(ingredient)
+      if (existingIngredient) {
+        return existingIngredient.id
+      } 
+      
+      const newIngredient = await this.ingredientRepository.create({ name: ingredient }, trx)
+      return newIngredient.id
+    }))
+
+    await dish.ingredients().attach(ingredientIds, null, trx)
+    return ingredients
+  }
+
   async update(dishId, {name, category_id, price, description, ingredients}) {
     const dish = await this.repository.findById(dishId)
     if(!dish) {
@@ -72,10 +74,9 @@ class DishService extends AppService {
     }
     await this.validateFields({name, category_id, price, description, ingredients}, dishId)
 
-    dish.merge({name, category_id, price, description})
-
     const trx = await Database.beginTransaction()
     try {
+      dish.merge({name, category_id, price, description})
       await this.repository.update(dish, trx)
       ingredients = await this.handleIngredients(ingredients, dish, trx)
       dish.ingredients = ingredients
@@ -119,19 +120,22 @@ class DishService extends AppService {
     await this.repository.update(dish)
   }
 
-  async delete(dishId) {
-    const dish = await this.repository.findById(dishId)
-    if(!dish) {
-      throw new AppException('Not found', 404)
+  async validateFields({name, category_id, price, description, ingredients}, dishId = null) {
+    if(!name || !category_id || !price || !description || !ingredients || ingredients.length === 0) {
+      throw new AppException('Required fields not informed', 400)
     }
 
-    dish.active = false 
-    this.repository.delete(dish)
+    const dishByName = await this.repository.getByName(name)
+    if(dishByName && Number(dishByName.id) !== Number(dishId)) {
+      throw new AppException('Dish already registered', 400)
+    }
+
+    const isValidCategory = await this.categoryRepository.findById(category_id)
+    if(!isValidCategory) {
+      throw new AppException('Invalid category', 400)
+    }
   }
 
-  async getById(id) {
-    return this.repository.getById(id)
-  }
 }
 
 module.exports = DishService
