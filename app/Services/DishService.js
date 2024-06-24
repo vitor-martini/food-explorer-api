@@ -110,6 +110,10 @@ class DishService extends AppService {
     dish.active = false 
     this.repository.delete(dish)
   }
+
+  async getById(id) {
+    return this.repository.getById(id)
+  }
 }
 
 module.exports = DishService

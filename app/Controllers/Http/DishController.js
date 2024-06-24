@@ -12,6 +12,16 @@ class DishController {
     const dish = await this.dishService.create(dishData)
     return response.status(201).json(dish)
   }
+  
+  async destroy({ params, response }) {
+    await this.dishService.delete(params.id)
+    return response.status(200).json()
+  }
+
+  async show({ params, response }) {
+    const dish = await this.dishService.getById(params.id)
+    return response.status(200).json(dish)
+  }
 
   async update({ params, request, response }) {
     const dishId = params.id 
@@ -28,11 +38,6 @@ class DishController {
     })
 
     await this.dishService.updatePhoto(dishId, photo)
-    return response.status(200).json()
-  }
-
-  async destroy({ params, response }) {
-    await this.dishService.delete(params.id)
     return response.status(200).json()
   }
 }
