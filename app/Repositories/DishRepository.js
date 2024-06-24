@@ -9,7 +9,7 @@ class DishRepository extends PgRepository{
   }
 
   async fetch(filters) {
-    let query = this.model.query()
+    let query = this.model.query().where('active', true)
 
     if(filters.name) {
       const searchName = filters.name.toLowerCase()
@@ -25,7 +25,7 @@ class DishRepository extends PgRepository{
         builder.whereRaw('LOWER(name) LIKE ?', [`%${searchCategory}%`])
       })
     }
-
+ 
     const dishes = await query.with('ingredients').with('category').fetch()
     return dishes
   }
