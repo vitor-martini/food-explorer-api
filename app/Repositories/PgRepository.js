@@ -16,12 +16,16 @@ class PgRepository {
     return await this.model.find(id)
   }
 
-  async create(data) {
+  async create(data, trx = null) {
+    if(trx) {
+      return await this.model.create(data, trx)  
+    }
+
     return await this.model.create(data)
   }
 
-  async update(obj) {
-    await obj.save()
+  async update(obj, trx = null) {
+    await obj.save(trx)
     return obj
   }
 

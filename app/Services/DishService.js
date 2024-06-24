@@ -1,5 +1,6 @@
 'use strict'
 const fs = use('fs')
+const Database = use('Database')
 const Helpers = use('Helpers');
 const AppService = use('App/Services/AppService')
 const AppException = use('App/Exceptions/AppException')
@@ -12,23 +13,21 @@ class DishService extends AppService {
     this.dishIngredientRepository = dishIngredientRepository 
   }
 
-  async handleIngredients(ingredients, dish) {
+  async handleIngredients(ingredients, dish, trx) {
     await this.dishIngredientRepository.deleteByDish(dish.id)
     ingredients = [...new Set(ingredients.map(ingredient =>  ingredient = ingredient.toLowerCase()))]
-    const checkIngredientsPromises = ingredients.map(async (ingredient) => {
-      const find = await this.ingredientRepository.findByName(ingredient)
-      let ingredient_id
-      if(find) {
-        ingredient_id = find.id
-      } else {
-        const newIngredient = await this.ingredientRepository.create({ name: ingredient })
-        ingredient_id = newIngredient.id
-      }
-      
-      await this.dishIngredientRepository.create({ dish_id: dish.id, ingredient_id })
-    })
 
-    await Promise.all(checkIngredientsPromises)
+    const ingredientIds = await Promise.all(ingredients.map(async (ingredient) => {
+      const existingIngredient = await this.ingredientRepository.findByName(ingredient)
+      if (existingIngredient) {
+        return existingIngredient.id
+      } 
+      
+      const newIngredient = await this.ingredientRepository.create({ name: ingredient }, trx)
+      return newIngredient.id
+    }))
+
+    await dish.ingredients().attach(ingredientIds, null, trx)
     return ingredients
   }
 
@@ -50,10 +49,20 @@ class DishService extends AppService {
 
   async create({name, category_id, price, description, ingredients}) {
     await this.validateFields({name, category_id, price, description, ingredients})
-    const dish = await this.repository.create({name, category_id, price, description})
-    ingredients = await this.handleIngredients(ingredients, dish)
-    dish.ingredients = ingredients
-    return dish
+
+    const trx = await Database.beginTransaction()
+
+    try {
+      const dish = await this.repository.create({name, category_id, price, description}, trx)
+      ingredients = await this.handleIngredients(ingredients, dish, trx)
+      dish.ingredients = ingredients
+      await trx.commit()
+      
+      return dish
+    } catch (error) {
+      await trx.rollback()
+      throw error
+    }
   }
 
   async update(dishId, {name, category_id, price, description, ingredients}) {
@@ -64,10 +73,19 @@ class DishService extends AppService {
     await this.validateFields({name, category_id, price, description, ingredients}, dishId)
 
     dish.merge({name, category_id, price, description})
-    await this.repository.update(dish)
-    ingredients = await this.handleIngredients(ingredients, dish)
-    dish.ingredients = ingredients
-    return dish
+
+    const trx = await Database.beginTransaction()
+    try {
+      await this.repository.update(dish, trx)
+      ingredients = await this.handleIngredients(ingredients, dish, trx)
+      dish.ingredients = ingredients
+      await trx.commit()
+      
+      return dish
+    } catch(error) {
+      await trx.rollback()
+      throw error
+    }
   }
 
   async updatePhoto(dishId, photo) {
