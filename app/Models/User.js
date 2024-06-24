@@ -23,7 +23,7 @@ class User extends Model {
   }
 
   favorites() {
-    return this.belongsToMany('App/Models/Dish').pivotTable('favorites').withTimeStamps()
+    return this.belongsToMany('App/Models/Dish').pivotTable('favorites').withTimestamps()
   }
 }
 

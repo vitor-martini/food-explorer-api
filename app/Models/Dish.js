@@ -16,11 +16,11 @@ class Dish extends Model {
   }
 
   favorites() {
-    return this.belongsToMany('App/Models/User').pivotTable('favorites').withTimeStamps()
+    return this.belongsToMany('App/Models/User').pivotTable('favorites').withTimestamps()
   }
 
   ingredients() {
-    return this.belongsToMany('App/Models/Ingredient').pivotTable('dish_ingredients').withTimeStamps()
+    return this.belongsToMany('App/Models/Ingredient').pivotTable('dish_ingredients').withTimestamps()
   }
 
   orders() {

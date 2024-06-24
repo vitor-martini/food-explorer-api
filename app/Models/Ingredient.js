@@ -12,7 +12,7 @@ class Ingredient extends Model {
   }
 
   dishes() {
-    return this.belongsToMany('App/Models/Dish').pivotTable('dish_ingredients').withTimeStamps()
+    return this.belongsToMany('App/Models/Dish').pivotTable('dish_ingredients').withTimestamps()
   }
 }
 
