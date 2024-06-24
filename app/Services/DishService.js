@@ -100,6 +100,16 @@ class DishService extends AppService {
     dish.photo = `${fileName}`
     await this.repository.update(dish)
   }
+
+  async delete(dishId) {
+    const dish = await this.repository.findById(dishId)
+    if(!dish) {
+      throw new AppException('Not found', 404)
+    }
+
+    dish.active = false 
+    this.repository.delete(dish)
+  }
 }
 
 module.exports = DishService

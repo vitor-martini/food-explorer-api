@@ -8,6 +8,11 @@ class DishRepository extends PgRepository{
       .whereRaw('LOWER(name) = ?', name.toLowerCase())
       .first()
   }
+
+  async delete(dish) {
+    await dish.save()
+    return dish 
+  }
 }
 
 module.exports = new DishRepository(Dish)

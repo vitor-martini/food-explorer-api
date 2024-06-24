@@ -30,6 +30,11 @@ class DishController {
     await this.dishService.updatePhoto(dishId, photo)
     return response.status(200).json()
   }
+
+  async destroy({ params, response }) {
+    await this.dishService.delete(params.id)
+    return response.status(200).json()
+  }
 }
 
 module.exports = DishController
