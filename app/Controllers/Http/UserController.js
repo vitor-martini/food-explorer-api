@@ -17,15 +17,15 @@ class UserController {
     return response.json(users)
   }
 
+  async show({ params }) {
+    return this.userService.getById(params.id)
+  }
+
   async store({ request, response }) {
     const userData = request.only(['name', 'email', 'password']) 
     const user = await this.userService.store(userData)
 
     return response.status(201).json(user)
-  }
-  
-  async show({ params }) {
-    return this.userService.getById(params.id)
   }
 
   async update({ auth, params, request, response }) {

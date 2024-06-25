@@ -13,24 +13,6 @@ class DishService extends AppService {
     this.dishIngredientRepository = dishIngredientRepository 
   }
 
-  async store({name, category_id, price, description, ingredients}) {
-    await this.validateFields({name, category_id, price, description, ingredients})
-
-    const trx = await Database.beginTransaction()
-
-    try {
-      const dish = await this.repository.store({name, category_id, price, description}, trx)
-      ingredients = await this.handleIngredients(ingredients, dish, trx)
-      dish.ingredients = ingredients
-      await trx.commit()
-      
-      return dish
-    } catch (error) {
-      await trx.rollback()
-      throw error
-    }
-  }
-
   async destroy(dishId) {
     const dish = await this.repository.findById(dishId)
     if(!dish) {
@@ -65,6 +47,24 @@ class DishService extends AppService {
 
     await dish.ingredients().attach(ingredientIds, null, trx)
     return ingredients
+  }
+
+  async store({name, category_id, price, description, ingredients}) {
+    await this.validateFields({name, category_id, price, description, ingredients})
+
+    const trx = await Database.beginTransaction()
+
+    try {
+      const dish = await this.repository.store({name, category_id, price, description}, trx)
+      ingredients = await this.handleIngredients(ingredients, dish, trx)
+      dish.ingredients = ingredients
+      await trx.commit()
+      
+      return dish
+    } catch (error) {
+      await trx.rollback()
+      throw error
+    }
   }
 
   async update(dishId, {name, category_id, price, description, ingredients}) {
@@ -135,7 +135,6 @@ class DishService extends AppService {
       throw new AppException('Invalid category', 400)
     }
   }
-
 }
 
 module.exports = DishService

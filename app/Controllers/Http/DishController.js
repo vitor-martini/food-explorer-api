@@ -7,12 +7,6 @@ class DishController {
     this.dishService = DishService
   }
 
-  async store({ request, response }) {
-    const dishData = request.only(['name', 'category_id', 'price', 'description', 'ingredients'])
-    const dish = await this.dishService.store(dishData)
-    return response.status(201).json(dish)
-  }
-  
   async destroy({ params, response }) {
     await this.dishService.destroy(params.id)
     return response.status(200).json()
@@ -27,6 +21,12 @@ class DishController {
   async show({ params, response }) {
     const dish = await this.dishService.getById(params.id)
     return response.status(200).json(dish)
+  }
+
+  async store({ request, response }) {
+    const dishData = request.only(['name', 'category_id', 'price', 'description', 'ingredients'])
+    const dish = await this.dishService.store(dishData)
+    return response.status(201).json(dish)
   }
 
   async update({ params, request, response }) {

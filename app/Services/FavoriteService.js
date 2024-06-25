@@ -8,28 +8,6 @@ class FavoriteService  extends AppService{
     this.dishRepository = dishRepository
   }
 
-  async validate(dishId) {
-    if(!dishId) {
-      throw new AppException('Must inform a dish Id', 400)
-    }
-
-    const dish = await this.dishRepository.getById(dishId)
-    if(!dish) {
-      throw new AppException('Invalid dish', 400)
-    }
-  }
-
-  async store({ dishId, userId }) {
-    await this.validate(dishId)
-
-    const alreadyFavorite = await this.repository.getFavorite(dishId, userId)
-    if(alreadyFavorite) {
-      throw new AppException('Dish is already favorite', 400)
-    }
-
-    return await this.repository.store({ dish_id: dishId, user_id: userId })
-  }
-
   async destroy({ dishId, userId }) {
     await this.validate(dishId)
 
@@ -43,6 +21,28 @@ class FavoriteService  extends AppService{
 
   async index(userId) {
     return await this.repository.getFavorites(userId)
+  }
+
+  async store({ dishId, userId }) {
+    await this.validate(dishId)
+
+    const alreadyFavorite = await this.repository.getFavorite(dishId, userId)
+    if(alreadyFavorite) {
+      throw new AppException('Dish is already favorite', 400)
+    }
+
+    return await this.repository.store({ dish_id: dishId, user_id: userId })
+  }
+
+  async validate(dishId) {
+    if(!dishId) {
+      throw new AppException('Must inform a dish Id', 400)
+    }
+
+    const dish = await this.dishRepository.getById(dishId)
+    if(!dish) {
+      throw new AppException('Invalid dish', 400)
+    }
   }
 }
 

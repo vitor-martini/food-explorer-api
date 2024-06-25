@@ -2,5 +2,5 @@
 
 const Route = use('Route')
 
-Route.post('sessions', 'SessionController.login')
 Route.get('sessions', 'SessionController.logout')
+Route.post('sessions', 'SessionController.login')
