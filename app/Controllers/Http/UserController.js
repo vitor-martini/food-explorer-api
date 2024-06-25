@@ -8,7 +8,7 @@ class UserController {
   }
 
   async destroy({ params, response }) {
-    await this.userService.delete(params.id)
+    await this.userService.destroy(params.id)
     return response.status(204).json(null)
   }
 
@@ -19,7 +19,7 @@ class UserController {
 
   async store({ request, response }) {
     const userData = request.only(['name', 'email', 'password']) 
-    const user = await this.userService.create(userData)
+    const user = await this.userService.store(userData)
 
     return response.status(201).json(user)
   }

@@ -16,7 +16,7 @@ class PgRepository {
     return await this.model.find(id)
   }
 
-  async create(data, trx = null) {
+  async store(data, trx = null) {
     if(trx) {
       return await this.model.create(data, trx)  
     }
@@ -29,7 +29,7 @@ class PgRepository {
     return obj
   }
 
-  async delete(obj) {
+  async destroy(obj) {
     await obj.delete()
   }
 }

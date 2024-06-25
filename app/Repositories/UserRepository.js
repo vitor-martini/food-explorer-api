@@ -19,7 +19,7 @@ class UserRepository extends PgRepository {
     return users.toJSON() 
   }
 
-  async delete(user) {
+  async destroy(user) {
     await user.save()
     return user
   }

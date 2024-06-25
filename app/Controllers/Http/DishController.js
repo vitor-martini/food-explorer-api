@@ -7,14 +7,14 @@ class DishController {
     this.dishService = DishService
   }
 
-  async create({ request, response }) {
+  async store({ request, response }) {
     const dishData = request.only(['name', 'category_id', 'price', 'description', 'ingredients'])
-    const dish = await this.dishService.create(dishData)
+    const dish = await this.dishService.store(dishData)
     return response.status(201).json(dish)
   }
   
   async destroy({ params, response }) {
-    await this.dishService.delete(params.id)
+    await this.dishService.destroy(params.id)
     return response.status(200).json()
   }
 

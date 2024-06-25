@@ -10,7 +10,7 @@ class FavoriteController {
   async store({ auth, request, response }) {
     const { dish_id: dishId } = request.only(['dish_id'])
     const requestUser = await auth.getUser()
-    await this.favoriteService.create({ dishId, userId: requestUser.id })
+    await this.favoriteService.store({ dishId, userId: requestUser.id })
 
     return response.status(200).json()
   }

@@ -19,8 +19,8 @@ class AppService {
     return obj
   }
 
-  async create(data) {
-    return await this.repository.create(data)
+  async store(data) {
+    return await this.repository.store(data)
   }
 
   async update(id, data) {
@@ -32,13 +32,13 @@ class AppService {
     return await this.repository.update(obj, data)
   }
 
-  async delete(id) {
+  async destroy(id) {
     const obj = await this.repository.findById(id);
     if(!obj) {
       throw new AppException('Not found', 404)
     }
 
-    await this.repository.delete(obj)
+    await this.repository.destroy(obj)
   }
 }
 

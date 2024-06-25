@@ -9,7 +9,7 @@ class UserService extends AppService {
     super(repository)
   }
 
-  async create(data) {
+  async store(data) {
     if(!data.name || !data.email || !data.password) {
       throw new AppException('Required fields not informed', 400)
     }
@@ -23,17 +23,17 @@ class UserService extends AppService {
       throw new AppException('Email already in use', 400)
     }
 
-    return await this.repository.create(data)
+    return await this.repository.store(data)
   }
 
-  async delete(id) {
+  async destroy(id) {
     const user = await this.repository.findById(id)
     if(!user) {
       throw new AppException('Not found', 404)
     }
 
     user.active = false 
-    return await this.repository.delete(user)
+    return await this.repository.destroy(user)
   }
 
   validateAuthorization(requestUser, id) {

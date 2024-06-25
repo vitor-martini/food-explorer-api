@@ -19,7 +19,7 @@ class FavoriteService  extends AppService{
     }
   }
 
-  async create({ dishId, userId }) {
+  async store({ dishId, userId }) {
     await this.validate(dishId)
 
     const alreadyFavorite = await this.repository.getFavorite(dishId, userId)
@@ -27,7 +27,7 @@ class FavoriteService  extends AppService{
       throw new AppException('Dish is already favorite', 400)
     }
 
-    return await this.repository.create({ dish_id: dishId, user_id: userId })
+    return await this.repository.store({ dish_id: dishId, user_id: userId })
   }
 
   async destroy({ dishId, userId }) {

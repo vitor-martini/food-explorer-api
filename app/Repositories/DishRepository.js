@@ -3,7 +3,7 @@ const PgRepository = use('App/Repositories/PgRepository')
 const Dish = use('App/Models/Dish')
 
 class DishRepository extends PgRepository{
-  async delete(dish) {
+  async destroy(dish) {
     await dish.save()
     return dish 
   }

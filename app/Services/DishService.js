@@ -13,13 +13,13 @@ class DishService extends AppService {
     this.dishIngredientRepository = dishIngredientRepository 
   }
 
-  async create({name, category_id, price, description, ingredients}) {
+  async store({name, category_id, price, description, ingredients}) {
     await this.validateFields({name, category_id, price, description, ingredients})
 
     const trx = await Database.beginTransaction()
 
     try {
-      const dish = await this.repository.create({name, category_id, price, description}, trx)
+      const dish = await this.repository.store({name, category_id, price, description}, trx)
       ingredients = await this.handleIngredients(ingredients, dish, trx)
       dish.ingredients = ingredients
       await trx.commit()
@@ -31,14 +31,14 @@ class DishService extends AppService {
     }
   }
 
-  async delete(dishId) {
+  async destroy(dishId) {
     const dish = await this.repository.findById(dishId)
     if(!dish) {
       throw new AppException('Not found', 404)
     }
 
     dish.active = false 
-    this.repository.delete(dish)
+    this.repository.destroy(dish)
   }
 
   async fetch(filters) {
@@ -50,7 +50,7 @@ class DishService extends AppService {
   }
 
   async handleIngredients(ingredients, dish, trx) {
-    await this.dishIngredientRepository.deleteByDish(dish.id)
+    await this.dishIngredientRepository.destroyByDish(dish.id)
     ingredients = [...new Set(ingredients.map(ingredient =>  ingredient = ingredient.toLowerCase()))]
 
     const ingredientIds = await Promise.all(ingredients.map(async (ingredient) => {
@@ -59,7 +59,7 @@ class DishService extends AppService {
         return existingIngredient.id
       } 
       
-      const newIngredient = await this.ingredientRepository.create({ name: ingredient }, trx)
+      const newIngredient = await this.ingredientRepository.store({ name: ingredient }, trx)
       return newIngredient.id
     }))
 
