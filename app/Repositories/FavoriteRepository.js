@@ -5,7 +5,10 @@ const Favorite = use('App/Models/Favorite')
 class FavoriteRepository extends PgRepository {
   async getFavorite(dishId, userId) {
     const favorite = await this.model.query()
-      .where({ dish_id: dishId, user_id: userId })
+      .where({ 
+        dish_id: dishId, 
+        user_id: userId 
+      })
       .first()
   
     return favorite

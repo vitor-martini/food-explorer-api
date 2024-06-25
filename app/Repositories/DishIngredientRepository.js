@@ -6,7 +6,7 @@ class DishIngredientRepository extends PgRepository {
   async destroyByDish(dishId) {
     await this.model
       .query()
-      .where('dish_id', dishId)
+      .where({ dish_id: dishId })
       .delete()
   }
 }

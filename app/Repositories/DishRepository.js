@@ -9,7 +9,7 @@ class DishRepository extends PgRepository{
   }
 
   async fetch(filters) {
-    let query = this.model.query().where('active', true)
+    let query = this.model.query().where({ active: true })
 
     if(filters.name) {
       const searchName = filters.name.toLowerCase()
@@ -26,7 +26,12 @@ class DishRepository extends PgRepository{
       })
     }
  
-    const dishes = await query.with('ingredients').with('category').fetch()
+    const dishes = await query
+      .with('ingredients')
+      .with('category')
+      .orderBy('name')
+      .fetch()
+
     return dishes
   }
 
@@ -38,7 +43,7 @@ class DishRepository extends PgRepository{
 
   async getById(id) {
     const dish = await this.model.query()
-      .where('id', id)
+      .where({ id })
       .with('ingredients')
       .with('category')
       .first()

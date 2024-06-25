@@ -14,9 +14,10 @@ class UserRepository extends PgRepository {
     const users = await this.model
       .query()
       .select('name', 'email', 'is_admin', 'created_at', 'updated_at')
+      .orderBy('name')
       .fetch()
       
-    return users.toJSON() 
+    return users
   }
 
   async destroy(user) {
