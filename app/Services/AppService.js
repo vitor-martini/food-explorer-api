@@ -8,7 +8,7 @@ class AppService {
   }
 
   async destroy(id) {
-    const obj = await this.repository.findById(id);
+    const obj = await this.repository.getById(id);
     if(!obj) {
       throw new AppException('Not found', 404)
     }
@@ -21,7 +21,7 @@ class AppService {
   }
 
   async getById(id) {
-    const obj = await this.repository.findById(id)
+    const obj = await this.repository.getById(id)
     if(!obj) {
       throw new AppException('Not found', 404)
     }
@@ -33,7 +33,7 @@ class AppService {
   }
 
   async update(id, data) {
-    const obj = await this.repository.findById(id)
+    const obj = await this.repository.getById(id)
     if(!obj) {
       throw new AppException('Not found', 404)
     }

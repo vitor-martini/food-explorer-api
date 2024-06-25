@@ -14,7 +14,7 @@ class DishController {
 
   async index({ request, response }) {
     const filters = request.get()
-    const dishes = await this.dishService.fetch(filters)
+    const dishes = await this.dishService.getDishes(filters)
     return response.status(200).json(dishes)
   }
 

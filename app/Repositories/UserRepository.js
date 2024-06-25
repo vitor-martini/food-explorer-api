@@ -4,7 +4,7 @@ const PgRepository = use('App/Repositories/PgRepository')
 const User = use('App/Models/User')
 
 class UserRepository extends PgRepository {
-  async findByEmail(email) {
+  async getByEmail(email) {
     return this.model.query()
       .whereRaw('LOWER(email) = ?', email.toLowerCase())
       .first()

@@ -12,7 +12,7 @@ class SessionService {
       throw new AppException("Invalid email or password")
     }  
 
-    const user = await this.userRepository.findByEmail(email)
+    const user = await this.userRepository.getByEmail(email)
     if(!user) {
       throw new AppException("Invalid email or password")
     }

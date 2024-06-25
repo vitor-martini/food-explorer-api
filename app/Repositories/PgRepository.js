@@ -12,7 +12,7 @@ class PgRepository {
     return await this.model.all()
   }
 
-  async findById(id) {
+  async getById(id) {
     return await this.model.find(id)
   }
 

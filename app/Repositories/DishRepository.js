@@ -8,7 +8,7 @@ class DishRepository extends PgRepository{
     return dish 
   }
 
-  async fetch(filters) {
+  async getDishes(filters) {
     let query = this.model.query().where({ active: true })
 
     if(filters.name) {

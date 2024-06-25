@@ -10,7 +10,7 @@ class UserService extends AppService {
   }
 
   async destroy(id) {
-    const user = await this.repository.findById(id)
+    const user = await this.repository.getById(id)
     if(!user) {
       throw new AppException('Not found', 404)
     }
@@ -28,7 +28,7 @@ class UserService extends AppService {
       throw new AppException('Invalid e-mail', 400)
     }
 
-    const emailAlreadyUsed = await this.repository.findByEmail(data.email)
+    const emailAlreadyUsed = await this.repository.getByEmail(data.email)
     if(emailAlreadyUsed){
       throw new AppException('Email already in use', 400)
     }
@@ -39,7 +39,7 @@ class UserService extends AppService {
   async update(requestUser, id, data) {
     this.validateParams(data)
     this.validateAuthorization(requestUser, id)
-    const user = await this.repository.findById(id)
+    const user = await this.repository.getById(id)
     if(!user) {
       throw new AppException('Not found', 404)
     }
@@ -59,7 +59,7 @@ class UserService extends AppService {
 
   async validateEmail(data, id) {
     if(data.email) {
-      const emailUser = await this.repository.findByEmail(data.email)
+      const emailUser = await this.repository.getByEmail(data.email)
       if(emailUser && Number(emailUser.id) !== Number(id)) {
         throw new AppException('Email already in use', 400)
       }

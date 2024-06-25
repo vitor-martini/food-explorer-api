@@ -14,7 +14,7 @@ class DishService extends AppService {
   }
 
   async destroy(dishId) {
-    const dish = await this.repository.findById(dishId)
+    const dish = await this.repository.getById(dishId)
     if(!dish) {
       throw new AppException('Not found', 404)
     }
@@ -23,8 +23,8 @@ class DishService extends AppService {
     this.repository.destroy(dish)
   }
 
-  async fetch(filters) {
-    return await this.repository.fetch(filters)
+  async getDishes(filters) {
+    return await this.repository.getDishes(filters)
   }
 
   async getById(id) {
@@ -68,7 +68,7 @@ class DishService extends AppService {
   }
 
   async update(dishId, {name, category_id, price, description, ingredients}) {
-    const dish = await this.repository.findById(dishId)
+    const dish = await this.repository.getById(dishId)
     if(!dish) {
       throw new AppException('Not found', 404)
     }
@@ -90,7 +90,7 @@ class DishService extends AppService {
   }
 
   async updatePhoto(dishId, photo) {
-    const dish = await this.repository.findById(dishId)
+    const dish = await this.repository.getById(dishId)
     if(!dish) {
       throw new AppException('Not found', 404)
     }
@@ -130,7 +130,7 @@ class DishService extends AppService {
       throw new AppException('Dish already registered', 400)
     }
 
-    const isValidCategory = await this.categoryRepository.findById(category_id)
+    const isValidCategory = await this.categoryRepository.getById(category_id)
     if(!isValidCategory) {
       throw new AppException('Invalid category', 400)
     }
