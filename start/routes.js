@@ -1,5 +1,6 @@
 'use strict'
-require('./routes/usersRoutes')
-require('./routes/sessionsRoutes')
 require('./routes/dishesRoutes')
 require('./routes/favoritesRoutes')
+require('./routes/orderRoutes')
+require('./routes/sessionsRoutes')
+require('./routes/usersRoutes')
