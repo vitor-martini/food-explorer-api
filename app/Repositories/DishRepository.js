@@ -41,7 +41,7 @@ class DishRepository extends PgRepository{
       .where('id', id)
       .with('ingredients')
       .with('category')
-      .firstOrFail()
+      .first()
 
     return dish
   }
