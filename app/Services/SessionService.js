@@ -26,7 +26,7 @@ class SessionService {
       throw new AppException("Invalid email or password")
     }
 
-    return user;
+    return user.toJSON();
   }
 }
 
