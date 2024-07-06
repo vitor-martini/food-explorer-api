@@ -190,6 +190,15 @@
 						"url": "{{URL}}/dishes/21"
 					},
 					"response": []
+				},
+				{
+					"name": "GetPhoto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URL}}/uploads/1720304305292.jpeg"
+					},
+					"response": []
 				}
 			]
 		},
