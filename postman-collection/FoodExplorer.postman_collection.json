@@ -333,6 +333,20 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URL}}/categories"
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
