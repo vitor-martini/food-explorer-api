@@ -265,6 +265,15 @@
 					"response": []
 				},
 				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URL}}/favorites/10"
+					},
+					"response": []
+				},
+				{
 					"name": "Delete",
 					"request": {
 						"method": "DELETE",
