@@ -23,6 +23,10 @@ class FavoriteService  extends AppService{
     return await this.repository.getFavorites(userId)
   }
 
+  async show(userId, dishId) {
+    return await this.repository.getFavoritesByDish(userId, dishId);
+  }
+
   async store({ dishId, userId }) {
     await this.validate(dishId)
 

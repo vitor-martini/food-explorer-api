@@ -21,6 +21,12 @@ class FavoriteController {
     return response.status(200).json(favorites)
   }
 
+  async show({ auth, params, response }) {
+    const requestUser = await auth.getUser()
+    const favorites = await this.favoriteService.show(requestUser.id, params.dish_id)
+    return response.status(200).json(favorites)
+  }
+
   async store({ auth, request, response }) {
     const { dish_id: dishId } = request.only(['dish_id'])
     const requestUser = await auth.getUser()

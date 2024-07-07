@@ -22,6 +22,17 @@ class FavoriteRepository extends PgRepository {
 
     return favorites
   }
+
+  async getFavoritesByDish(userId, dishId) {
+    const favorites = await this.model.query()
+      .where({ 
+        user_id: userId,
+        dish_id: dishId
+      })
+      .first()
+
+    return favorites
+  }
 }
 
 
