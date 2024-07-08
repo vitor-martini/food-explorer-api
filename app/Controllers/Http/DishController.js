@@ -18,6 +18,13 @@ class DishController {
     return response.status(200).json(dishes)
   }
 
+  async authIndex({ auth, request, response }) {
+    const requestUser = await auth.getUser()
+    const filters = request.get()
+    const dishes = await this.dishService.getAuthDishes(filters, requestUser.id)
+    return response.status(200).json(dishes)
+  }
+
   async show({ params, response }) {
     const dish = await this.dishService.getById(params.id)
     return response.status(200).json(dish)

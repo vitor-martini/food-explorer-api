@@ -110,6 +110,29 @@
 					"response": []
 				},
 				{
+					"name": "Auth Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/auth-dishes?name=Queijo",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth-dishes"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Queijo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Show",
 					"request": {
 						"method": "GET",

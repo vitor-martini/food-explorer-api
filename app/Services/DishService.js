@@ -27,6 +27,10 @@ class DishService extends AppService {
     return await this.repository.getDishes(filters)
   }
 
+  async getAuthDishes(filters, userId) {
+    return await this.repository.getAuthDishes(filters, userId)
+  }
+
   async getById(id) {
     return this.repository.getById(id)
   }

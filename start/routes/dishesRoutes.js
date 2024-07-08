@@ -3,6 +3,7 @@
 const Route = use('Route')
 
 Route.delete('dishes/:id', 'DishController.destroy').middleware(['authViaCookie', 'adminAuth'])
+Route.get('auth-dishes', 'DishController.authIndex').middleware(['authViaCookie'])
 Route.get('dishes', 'DishController.index')
 Route.get('dishes/:id', 'DishController.show')
 Route.post('dishes', 'DishController.store').middleware(['authViaCookie', 'adminAuth'])
