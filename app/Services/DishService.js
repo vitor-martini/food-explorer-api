@@ -23,12 +23,8 @@ class DishService extends AppService {
     this.repository.destroy(dish)
   }
 
-  async getDishes(filters) {
-    return await this.repository.getDishes(filters)
-  }
-
-  async getAuthDishes(filters, userId) {
-    return await this.repository.getAuthDishes(filters, userId)
+  async getDishes(filters, userId) {
+    return await this.repository.getDishes(filters, userId)
   }
 
   async getById(id) {

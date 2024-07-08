@@ -14,14 +14,14 @@ class DishController {
 
   async index({ request, response }) {
     const filters = request.get()
-    const dishes = await this.dishService.getDishes(filters)
+    const dishes = await this.dishService.getDishes(filters, null)
     return response.status(200).json(dishes)
   }
 
   async authIndex({ auth, request, response }) {
     const requestUser = await auth.getUser()
     const filters = request.get()
-    const dishes = await this.dishService.getAuthDishes(filters, requestUser.id)
+    const dishes = await this.dishService.getDishes(filters, requestUser.id)
     return response.status(200).json(dishes)
   }
 
