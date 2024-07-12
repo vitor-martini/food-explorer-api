@@ -23,6 +23,7 @@ const providers = [
   path.join(__dirname, '..', 'app', 'Providers', 'FavoriteServiceProvider'),
   path.join(__dirname, '..', 'app', 'Providers', 'OrderServiceProvider'),
   path.join(__dirname, '..', 'app', 'Providers', 'CategoryServiceProvider'),
+  path.join(__dirname, '..', 'app', 'Providers', 'StatusServiceProvider'),
 ]
 
 /*

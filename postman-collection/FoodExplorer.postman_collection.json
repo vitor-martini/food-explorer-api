@@ -388,6 +388,20 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Status",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URL}}/status"
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
