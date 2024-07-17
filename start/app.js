@@ -1,6 +1,11 @@
 'use strict'
 const path = require("path");
-require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
+
+try {
+  require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
+} catch (error) {
+  console.warn('No .env file found, relying on environment variables');
+}
 
 /*
 |--------------------------------------------------------------------------
