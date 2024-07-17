@@ -1,6 +1,5 @@
 node_modules
 tmp
-.env
 public/**
 !public/**/
 !public/**/.gitkeep
