@@ -7,7 +7,7 @@
   "scripts": {
     "start": "pm2-runtime start ecosystem.config.js --env production",
     "dev": "adonis serve --dev",
-    "reset": "adonis migration:reset && adonis migration:run && adonis seed --files=index.js"
+    "reset": "adonis migration:reset --force && adonis migration:run && adonis seed --files=index.js --force "
   },
   "author": "",
   "license": "UNLICENSED",
