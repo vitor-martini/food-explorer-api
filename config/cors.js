@@ -16,7 +16,7 @@ module.exports = {
   | Function - Receives the current origin and should return one of the above values.
   |
   */
-  origin: ['http://localhost:5173', 'https://food-explorer-martini.netlify.app/'],
+  origin: ['http://localhost:5173', 'https://food-explorer-martini.netlify.app', 'http://food-explorer-martini.netlify.app'],
 
   /*
   |--------------------------------------------------------------------------
